@@ -1,37 +1,281 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>youtube toolkit enhanced</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h2>youtube toolkit enhanced</h2>
-    <div class="input-group">
-      <input id="url" placeholder="paste a youtube url">
-      <button id="submit-btn">submit</button>
-    </div>
-    <div id="error-msg"></div>
-    <div id="results-area">
-      <img id="thumbnail-img">
-      <h3 id="video-title"></h3>
-      <textarea id="description-text" readonly></textarea>
-      <div class="buttons-grid">
-        <button id="copy-thumb-link">copy thumb link</button>
-        <button id="copy-description">copy description</button>
-        <button id="copy-title">copy title</button>
-        <button id="view-transcript">view transcript</button>
-        <button id="clear-all">clear all</button>
-        <button id="random-video">random video</button>
-        <button id="copy-url-data">copy url data</button>
-        <button id="expand-url">expand url</button>
-        <button id="copy-embed">copy embed</button>
-      </div>
-      <div id="transcript"></div>
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
+<html lang="en">  
+<head>  
+  <meta charset="utf-8">  
+  <title>youtube toolkit enhanced</title>  
+  <meta name="viewport" content="width=device-width,initial-scale=1">  
+  <style>  
+    :root {  
+      --bg-color: #0e0e0e;  
+      --surface-color: #1c1c1c;  
+      --input-bg: #2a2a2a;  
+      --text-color: #f0f0f0;  
+      --text-muted: #aaa;  
+      --primary-color: #4caf50;  
+      --primary-hover: #388e3c;  
+      --secondary-color: #1e88e5;  
+      --secondary-hover: #1565c0;  
+      --error-color: #e74c3c;  
+      --button-text: #fff;  
+      --border-radius: 40px;  
+      --transition-speed: .3s;  
+    }  
+  
+    body {  
+      background: var(--bg-color);  
+      color: var(--text-color);  
+      font-family: sans-serif;  
+      margin: 0;  
+      padding: 0;  
+    }  
+  
+    .container {  
+      max-width: 800px;  
+      width: 90%;  
+      margin: 20px auto;  
+      padding: 20px;  
+      background: var(--surface-color);  
+      border-radius: var(--border-radius);  
+      box-shadow: 0 0 12px rgba(0, 0, 0, .3);  
+    }  
+  
+    .input-group {  
+      display: flex;  
+      gap: 10px;  
+      flex-wrap: wrap;  
+      margin-bottom: 15px;  
+    }  
+  
+    .input-group input {  
+      flex: 1 1 auto;  
+      padding: 12px;  
+      background: var(--input-bg);  
+      color: var(--text-color);  
+      border: none;  
+      border-radius: var(--border-radius);  
+    }  
+  
+    .input-group button {  
+      background: var(--primary-color);  
+      color: var(--button-text);  
+      padding: 12px 18px;  
+      border: none;  
+      border-radius: var(--border-radius);  
+      cursor: pointer;  
+      transition: background var(--transition-speed);  
+    }  
+  
+    .input-group button:hover {  
+      background: var(--primary-hover);  
+    }  
+  
+    #error-msg {  
+      color: var(--error-color);  
+      margin-bottom: 10px;  
+    }  
+  
+    #results-area {  
+      display: none;  
+      margin-top: 20px;  
+    }  
+  
+    #thumbnail-img {  
+      width: 100%;  
+      border-radius: var(--border-radius);  
+    }  
+  
+    textarea {  
+      width: 100%;  
+      margin-top: 10px;  
+      padding: 10px;  
+      background: var(--input-bg);  
+      color: var(--text-color);  
+      border: none;  
+      border-radius: var(--border-radius);  
+    }  
+  
+    .buttons-grid {  
+      margin-top: 15px;  
+      display: grid;  
+      gap: 10px;  
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));  
+    }  
+  
+    .buttons-grid button {  
+      background: var(--secondary-color);  
+      color: var(--button-text);  
+      padding: 10px;  
+      border: none;  
+      border-radius: var(--border-radius);  
+      cursor: pointer;  
+      transition: background var(--transition-speed);  
+    }  
+  
+    .buttons-grid button:hover {  
+      background: var(--secondary-hover);  
+    }  
+  
+    #transcript {  
+      margin-top: 15px;  
+      color: var(--text-muted);  
+      padding: 10px;  
+      background: var(--input-bg);  
+      border-radius: var(--border-radius);  
+      display: none;  
+    }  
+  </style>  
+</head>  
+<body>  
+  <div class="container">  
+    <h2>youtube toolkit enhanced</h2>  
+    <div class="input-group">  
+      <input id="url" placeholder="paste a youtube url">  
+      <button id="submit-btn">submit</button>  
+    </div>  
+    <div id="error-msg"></div>  
+    <div id="results-area">  
+      <img id="thumbnail-img">  
+      <h3 id="video-title"></h3>  
+      <textarea id="description-text" readonly></textarea>  
+      <div class="buttons-grid">  
+        <button id="copy-thumb-link">copy thumb link</button>  
+        <button id="copy-description">copy description</button>  
+        <button id="copy-title">copy title</button>  
+        <button id="view-transcript">view transcript</button>  
+        <button id="clear-all">clear all</button>  
+        <button id="random-video">random video</button>  
+        <button id="copy-url-data">copy url data</button>  
+        <button id="expand-url">expand url</button>  
+        <button id="copy-embed">copy embed</button>  
+      </div>  
+      <div id="transcript"></div>  
+    </div>  
+  </div>  
+  
+  <script>  
+    const apiKey = 'AIzaSyDsiAyll5kEmNhQLM2FznGkQzSAox7qsSw'  
+    const urlInput = document.getElementById('url')  
+    const submitBtn = document.getElementById('submit-btn')  
+    const errorMsg = document.getElementById('error-msg')  
+    const results = document.getElementById('results-area')  
+    const thumb = document.getElementById('thumbnail-img')  
+    const title = document.getElementById('video-title')  
+    const desc = document.getElementById('description-text')  
+    const transcript = document.getElementById('transcript')  
+  
+    function getIdFromUrl(url) {  
+      const patterns = [  
+        /youtu\.be\/([a-zA-Z0-9_-]{11})/,  
+        /v=([a-zA-Z0-9_-]{11})/,  
+        /\/embed\/([a-zA-Z0-9_-]{11})/,  
+        /\/shorts\/([a-zA-Z0-9_-]{11})/  
+      ]  
+      for (const p of patterns) {  
+        const m = url.match(p)  
+        if (m) return m[1]  
+      }  
+      return ''  
+    }  
+  
+    async function fetchVideoData(id) {  
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${apiKey}`)  
+      const data = await res.json()  
+      if (data.items.length === 0) throw new Error('video data not found')  
+      const info = data.items[0].snippet  
+      return {  
+        title: info.title,  
+        description: info.description,  
+        thumbnail: info.thumbnails.high.url  
+      }  
+    }  
+  
+    async function displayVideoData(id) {  
+      try {  
+        const data = await fetchVideoData(id)  
+        thumb.src = data.thumbnail  
+        title.textContent = data.title  
+        desc.value = data.description  
+        results.style.display = 'block'  
+      } catch (e) {  
+        errorMsg.textContent = 'error fetching video data'  
+      }  
+    }  
+  
+    async function fetchTranscript(id) {  
+      transcript.textContent = 'transcript loading...'  
+      transcript.style.display = 'block'  
+      await new Promise(r => setTimeout(r, 1500))  
+      transcript.textContent = 'transcript not available here rn hehe'  
+    }  
+  
+    async function fetchRandomVideo() {  
+      const words = ['funny','meme','how','what','cat','dog','dance','game','asmr','vlog','new','crazy','music','story','shorts','best','minecraft','roblox','anime','review']  
+      const randomWord = words[Math.floor(Math.random() * words.length)]  
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${randomWord}&type=video&maxResults=50&key=${apiKey}`)  
+      const data = await res.json()  
+      if (data.items.length === 0) {  
+        errorMsg.textContent = 'no random results'  
+        return  
+      }  
+      const randVid = data.items[Math.floor(Math.random() * data.items.length)]  
+      const id = randVid.id.videoId  
+      urlInput.value = `https://www.youtube.com/watch?v=${id}`  
+      await displayVideoData(id)  
+    }  
+  
+    submitBtn.onclick = async () => {  
+      const id = getIdFromUrl(urlInput.value)  
+      if (!id) {  
+        errorMsg.textContent = 'invalid youtube url'  
+        return  
+      }  
+      errorMsg.textContent = ''  
+      submitBtn.textContent = 'loading...'  
+      await displayVideoData(id)  
+      submitBtn.textContent = 'submit'  
+    }  
+  
+    document.getElementById('clear-all').onclick = () => {  
+      urlInput.value = ''  
+      results.style.display = 'none'  
+      thumb.src = ''  
+      title.textContent = ''  
+      desc.value = ''  
+      errorMsg.textContent = ''  
+      transcript.style.display = 'none'  
+    }  
+  
+    document.getElementById('copy-thumb-link').onclick = () => navigator.clipboard.writeText(thumb.src)  
+    document.getElementById('copy-description').onclick = () => navigator.clipboard.writeText(desc.value)  
+    document.getElementById('copy-title').onclick = () => navigator.clipboard.writeText(title.textContent)  
+    document.getElementById('view-transcript').onclick = async () => {  
+      const id = getIdFromUrl(urlInput.value)  
+      if (!id) return  
+      await fetchTranscript(id)  
+    }  
+  
+    document.getElementById('random-video').onclick = async () => {  
+      await fetchRandomVideo()  
+    }  
+  
+    document.getElementById('copy-url-data').onclick = () => {  
+      const id = getIdFromUrl(urlInput.value)  
+      if (!id) return  
+      const data = `id: ${id}\nshort: youtu.be/${id}\nfull: https://www.youtube.com/watch?v=${id}`  
+      navigator.clipboard.writeText(data)  
+    }  
+  
+    document.getElementById('expand-url').onclick = () => {  
+      const id = getIdFromUrl(urlInput.value)  
+      if (!id) return  
+      urlInput.value = `https://www.youtube.com/watch?v=${id}`  
+    }  
+  
+    document.getElementById('copy-embed').onclick = () => {  
+      const id = getIdFromUrl(urlInput.value)  
+      if (!id) return  
+      const embed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`  
+      navigator.clipboard.writeText(embed)  
+    }  
+  </script>  
+</body>  
 </html>
