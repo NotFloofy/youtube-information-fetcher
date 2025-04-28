@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>youtube toolkit enhanced</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>youtube toolkit enhanced</h2>
+    <div class="input-group">
+      <input id="url" placeholder="paste a youtube url">
+      <button id="submit-btn">submit</button>
+    </div>
+    <div id="error-msg"></div>
+    <div id="results-area">
+      <img id="thumbnail-img">
+      <h3 id="video-title"></h3>
+      <textarea id="description-text" readonly></textarea>
+      <div class="buttons-grid">
+        <button id="copy-thumb-link">copy thumb link</button>
+        <button id="copy-description">copy description</button>
+        <button id="copy-title">copy title</button>
+        <button id="view-transcript">view transcript</button>
+        <button id="clear-all">clear all</button>
+        <button id="random-video">random video</button>
+        <button id="copy-url-data">copy url data</button>
+        <button id="expand-url">expand url</button>
+        <button id="copy-embed">copy embed</button>
+      </div>
+      <div id="transcript"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
